@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TOXA | Premium Interface</title>
+    <title>TOXA | Live Trading Platform</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-black: #0a0a0a;
             --accent-yellow: #f5c518;
-            --card-gray: #161616;
+            --card-dark: #121212;
             --text-white: #ffffff;
-            --text-dim: #a1a1a1;
+            --text-gray: #a1a1a1;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -21,32 +21,32 @@
             color: var(--text-white);
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
             overflow-x: hidden;
         }
 
-        /* Lighting glow from the image */
-        body::after {
+        /* Gold glow background */
+        body::before {
             content: "";
             position: fixed;
             top: -10%;
-            right: -10%;
-            width: 600px;
-            height: 600px;
+            right: -5%;
+            width: 700px;
+            height: 700px;
             background: radial-gradient(circle, rgba(245, 197, 24, 0.1) 0%, rgba(0,0,0,0) 70%);
             z-index: -1;
         }
 
+        /* Navbar */
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 30px 8%;
+            padding: 20px 8%;
+            border-bottom: 1px solid #1a1a1a;
         }
 
         .logo {
-            font-size: 28px;
+            font-size: 26px;
             font-weight: 800;
             display: flex;
             align-items: center;
@@ -54,26 +54,43 @@
         }
 
         .logo-icon {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             background: var(--accent-yellow);
-            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); /* Simple diamond shape */
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
         }
 
-        .nav-btns button {
-            padding: 10px 22px;
+        .nav-right {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-sm-ghost {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: white;
+            padding: 10px 20px;
             border-radius: 10px;
-            font-weight: 600;
             cursor: pointer;
-            border: none;
-            transition: 0.3s;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 14px;
         }
 
-        .btn-in { background: transparent; color: white; border: 1px solid #333 !important; margin-right: 10px; }
-        .btn-up { background: linear-gradient(180deg, #ffe44d 0%, #f5c518 100%); color: #000; }
+        .btn-sm-gold {
+            background: linear-gradient(180deg, #ffe44d 0%, #f5c518 100%);
+            border: none;
+            color: black;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 14px;
+        }
 
+        /* Hero Area */
         .hero {
-            flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -82,149 +99,126 @@
         }
 
         h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
             font-weight: 800;
             line-height: 1.1;
             max-width: 800px;
+            margin-bottom: 15px;
         }
 
-        .hl {
+        .highlight {
             background: var(--accent-yellow);
-            color: #000;
-            padding: 2px 12px;
-            border-radius: 8px;
+            color: black;
+            padding: 0 10px;
+            border-radius: 6px;
         }
 
-        .sub {
-            color: var(--text-dim);
-            margin: 25px 0 40px;
-            max-width: 400px;
-            font-size: 1.1rem;
-        }
-
-        .editor-container {
+        /* Chart Container Replacement */
+        .chart-wrapper {
             width: 100%;
-            max-width: 850px;
-            background: var(--card-gray);
-            padding: 30px;
+            max-width: 1100px;
+            background: #161616;
+            padding: 15px;
             border-radius: 24px;
             border: 1px solid #222;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.8);
+            margin: 30px 0;
+            height: 550px; /* Chart Height */
         }
 
-        textarea {
+        #tradingview_widget {
             width: 100%;
-            height: 220px;
-            background: #000;
-            border: 1px solid #333;
-            border-radius: 15px;
-            color: #fff;
-            padding: 20px;
-            font-size: 1rem;
-            resize: none;
-            outline: none;
-            font-family: inherit;
-        }
-
-        .controls {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-        }
-
-        .btn-save {
-            background: var(--accent-yellow);
-            color: #000;
-            padding: 15px 45px;
+            height: 100%;
             border-radius: 12px;
-            font-weight: 700;
-            border: none;
-            cursor: pointer;
+            overflow: hidden;
         }
 
-        .tab-bar {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            display: inline-flex;
+        /* Floating Nav Bar */
+        .floating-nav {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             padding: 6px;
-            border-radius: 14px;
+            border-radius: 18px;
+            display: flex;
             gap: 5px;
-            margin-top: 40px;
-            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .tab {
-            padding: 8px 18px;
-            border-radius: 10px;
+        .nav-item {
+            padding: 10px 20px;
+            border-radius: 12px;
             font-size: 13px;
-            color: var(--text-dim);
+            font-weight: 600;
+            color: var(--text-gray);
             cursor: pointer;
+            transition: 0.3s;
         }
 
-        .tab.active { background: #222; color: white; }
-
-        h2.footer-msg {
-            margin-top: 60px;
-            font-size: 2.2rem;
-            font-weight: 800;
+        .nav-item.active {
+            background: #222;
+            color: white;
         }
+
+        .nav-item:hover {
+            color: white;
+        }
+
     </style>
 </head>
 <body>
 
     <nav>
-        <div class="logo"><div class="logo-icon"></div>toxa</div>
-        <div class="nav-btns">
-            <button class="btn-in">Sign in</button>
-            <button class="btn-up">Sign up</button>
+        <div class="logo">
+            <div class="logo-icon"></div>
+            toxa
+        </div>
+        <div class="nav-right">
+            <a href="#" class="btn-sm-ghost">Sign in</a>
+            <a href="#" class="btn-sm-gold">Sign up</a>
         </div>
     </nav>
 
     <div class="hero">
-        <h1>Trade <span class="hl">easily</span> and conveniently</h1>
-        <p class="sub">A simple and reliable platform with fast data persistence.</p>
+        <h1>Trade <span class="highlight">easily</span> and conveniently</h1>
+        
+        <!-- Live Trading Chart Start -->
+        <div class="chart-wrapper">
+            <div id="tradingview_widget"></div>
+        </div>
+        <!-- Live Trading Chart End -->
 
-        <div class="editor-container">
-            <textarea id="dataBox" placeholder="Type anything..."></textarea>
-            <div class="controls">
-                <button class="btn-save" onclick="saveData()">Save</button>
-                <button class="btn-in" onclick="clearData()">Clear</button>
-            </div>
+        <div class="floating-nav">
+            <div class="nav-item active">Start</div>
+            <div class="nav-item">Benefits</div>
+            <div class="nav-item">Payment</div>
+            <div class="nav-item">Blog</div>
+            <div class="nav-item">Reviews</div>
         </div>
 
-        <div class="tab-bar">
-            <div class="tab active">Start</div>
-            <div class="tab">Benefits</div>
-            <div class="tab">Payment</div>
-            <div class="tab">Blog</div>
-            <div class="tab">Reviews</div>
-        </div>
-
-        <h2 class="footer-msg">You will <span class="hl">love</span> trading with us</h2>
+        <h2 style="margin-top: 50px; font-size: 2.5rem; font-weight: 800;">
+            You will <span class="highlight">love</span> trading with us
+        </h2>
     </div>
 
-    <script>
-        window.onload = function() {
-            let saved = localStorage.getItem("toxaData");
-            if (saved) document.getElementById("dataBox").value = saved;
-        };
-
-        function saveData() {
-            let text = document.getElementById("dataBox").value;
-            localStorage.setItem("toxaData", text);
-            
-            const btn = document.querySelector('.btn-save');
-            btn.innerText = "Saved!";
-            setTimeout(() => btn.innerText = "Save", 2000);
-        }
-
-        function clearData() {
-            if(confirm("Clear all data?")) {
-                localStorage.removeItem("toxaData");
-                document.getElementById("dataBox").value = "";
-            }
-        }
+    <!-- TradingView Widget Script -->
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    <script type="text/javascript">
+    new TradingView.widget(
+    {
+        "autosize": true,
+        "symbol": "BINANCE:BTCUSDT",
+        "interval": "D",
+        "timezone": "Etc/UTC",
+        "theme": "dark",
+        "style": "1",
+        "locale": "en",
+        "toolbar_bg": "#f1f3f6",
+        "enable_publishing": false,
+        "hide_side_toolbar": false,
+        "allow_symbol_change": true,
+        "container_id": "tradingview_widget"
+    }
+    );
     </script>
 </body>
 </html>
